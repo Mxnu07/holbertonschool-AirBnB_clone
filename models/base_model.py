@@ -3,8 +3,9 @@
 import uuid
 import datetime
 
+
 class BaseModel:
-    
+
     def __init__(self, id=None, created_at=None, updated_at=None):
         """Constructor of class BaseModel"""
         self.id = str(uuid.uuid4())
@@ -15,7 +16,7 @@ class BaseModel:
         """Return a string representation of the object"""
         return "[{}] ({}) {}".format(self.__class__.__name__,
                                      self.id, self.__dict__)
-    
+
     def save(self):
         """Update the public instance attribute updated_at"""
         self.updated_at = datetime.datetime.now()
