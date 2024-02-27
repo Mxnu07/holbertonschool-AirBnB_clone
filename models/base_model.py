@@ -34,7 +34,6 @@ class BaseModel:
         self.updated_at = datetime.datetime.now()
         models.storage.save()
 
-
     def to_dict(self):
         """Return a dictionary representation of the object"""
         new_dict = self.__dict__.copy()
