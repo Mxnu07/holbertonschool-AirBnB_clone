@@ -2,6 +2,7 @@
 """define subclass amenity"""
 from models.base_model import BaseModel
 
+
 class Amenity(BaseModel):
     """amenities of the place"""
 
