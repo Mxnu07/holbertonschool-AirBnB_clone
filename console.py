@@ -63,7 +63,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** no instance found **")
 
-
     def do_destroy(self, arg):
         """Delete an instance based on the class name and id"""
         args = shlex.split(arg)
@@ -86,7 +85,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** no instance found **")
 
-
     def do_all(self, arg):
         """Print string representation of all instances"""
         args = shlex.split(arg)
@@ -96,7 +94,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             try:
                 cls = eval(args[0])
-                print([str(obj) for key, obj in objects.items() if key.split('.')[0] == args[0]])
+                print([str(obj) for key, obj in objects.items()
+                       if key.split('.')[0] == args[0]])
             except NameError:
                 print("** class doesn't exist **")
 
