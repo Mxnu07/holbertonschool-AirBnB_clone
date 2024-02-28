@@ -23,6 +23,9 @@ class HBNBCommand(cmd.Cmd):
     def help_EOF(self):
         print("Exit the program when EOF is reached (Ctrl+D)")
 
+    def emptyline(self):
+        """do nothing when press enter and no command"""
+        pass
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
