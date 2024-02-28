@@ -4,7 +4,6 @@ import cmd
 from models.base_model import BaseModel
 from models import storage
 import shlex
-from model import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -32,7 +31,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """create a new instance of basemodel save it, and print the id"""
+        """create a new instance of BaseModel save it, and print the id"""
         if not arg:
             print("** class name missing **")
             return

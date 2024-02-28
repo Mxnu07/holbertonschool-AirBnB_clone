@@ -33,12 +33,8 @@ class FileStorage:
     def reload(self):
         """load the objects from a json"""
         try:
-            with open(self.__file_path, "r") as file:
-                data = json.load(file)
-                for key, value in data.items():
-                    class_name, obj_id = key.split('.')
-                    obj_class = globals()[class_name]
-                    obj_instance = obj_class(**value)
-                    self.__objects[key] = obj_instance
-        except FileNotFoundError:
+            with open(self.__file_path, 'r', encoding="utf-8") as file:
+                self.__objects = {k: BaseModel(**v)
+                                  for k, v in json.load(file).items()}
+        except Exception:
             pass
