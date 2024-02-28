@@ -32,7 +32,7 @@ class FileStorage:
         """load the objects from a json"""
         try:
             with open(self.__file_path, "r") as file:
-                data = json.loads(file)
+                data = json.load(file)
                 for key, value in data.items():
                     class_name, obj_id = key.split('.')
                     obj_class = globals()[class_name]
