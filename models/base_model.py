@@ -2,6 +2,7 @@
 """Module that define class BaseModel"""
 import uuid
 import datetime
+import models
 
 
 class BaseModel:
@@ -21,6 +22,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.datetime.now()
             self.updated_at = datetime.datetime.now()
+            models.storage.new(self)
 
     def __str__(self):
         """Return a string representation of the object"""
@@ -30,6 +32,7 @@ class BaseModel:
     def save(self):
         """Update the public instance attribute updated_at"""
         self.updated_at = datetime.datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """Return a dictionary representation of the object"""

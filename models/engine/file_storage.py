@@ -1,24 +1,42 @@
 #!/usr/bin/python3
-"""Module that define class FileStorage"""
+"""file storage class"""
 import json
 
 
 class FileStorage:
-    """Define class FileStorage"""
-    
+    """
+    this class represents a file storage
+    system for objects in the air BnB clone project.
+    """
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
-        """Return the dictionary __objects"""
-        return FileStorage.__objects
-    
+        """Returns the dictionary of all objects currently stored."""
+        return self.__objects
+
     def new(self, obj):
-        """Set in __objects the obj with key <obj class name>.id"""
+        """add a new object to storage"""
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        self.__objects[key] = obj
 
     def save(self):
-        """Serializes __objects to the JSON file (path: __file_path)"""
-        with open(FileStorage.__file_path, "w") as f:
-            json.dump({k: v.to_dict() for k, v in FileStorage.__objects.items()}, f)
+        """saves the objects to json"""
+        serialized_objects = {}
+        for key, value in self.__objects.items():
+            serialized_objects[key] = value.to_dict()
+        with open(self.__file_path, "w") as file:
+            json.dump(serialized_objects, file)
+
+    def reload(self):
+        """load the objects from a json"""
+        try:
+            with open(self.__file_path, "r") as file:
+                data = json.loads(file)
+                for key, value in data.items():
+                    class_name, obj_id = key.split('.')
+                    obj_class = globals()[class_name]
+                    obj_instance = obj_class(**value)
+                    self.__objects[key] = obj_instance
+        except FileNotFoundError:
+            pass
