@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Module that defines a command interpreter"""
 import cmd
 
 
