@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 """Module that defines a command interpreter"""
 import cmd
+from models.base_model import BaseModel
+from models import storage
+import shlex
 
 
 class HBNBCommand(cmd.Cmd):
@@ -26,6 +29,16 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """do nothing when press enter and no command"""
         pass
+
+    def do_create(self, arg):
+        """create a new instance of basemodel save it, and print the id"""
+        if not arg:
+            print("** class name missing **")
+            return
+        try:
+            new_instance = eval(arg)()
+            new_instance.save()
+            print(new_instance.id)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
