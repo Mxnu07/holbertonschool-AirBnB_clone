@@ -94,3 +94,68 @@ class TestFileStorage(unittest.TestCase):
         obj[key] = user
         storage.save()
         self.assertTrue(os.path.exists('file.json'))
+
+    def test_save_no_args(self):
+        """Test for save method with no arguments"""
+        with self.assertRaises(TypeError):
+            self.storage.save(None)
+
+    def test_save_many_args(self):
+        """Test for save method with many arguments"""
+        with self.assertRaises(TypeError):
+            self.storage.save(1, 2)
+
+    def test_reload_no_args(self):
+        """Test for reload method with no arguments"""
+        with self.assertRaises(TypeError):
+            self.storage.reload(None)
+
+    def test_reload_many_args(self):
+        """Test for reload method with many arguments"""
+        with self.assertRaises(TypeError):
+            self.storage.reload(1, 2)
+
+    def test_new_no_args(self):
+        """Test for new method with no arguments"""
+        with self.assertRaises(TypeError):
+            self.storage.new(None)
+
+    def test_new_many_args(self):
+        """Test for new method with many arguments"""
+        with self.assertRaises(TypeError):
+            self.storage.new(1, 2)
+
+    def test_all_no_args(self):
+        """Test for all method with no arguments"""
+        with self.assertRaises(TypeError):
+            self.storage.all(None)
+
+    def test_all_many_args(self):
+        """Test for all method with many arguments"""
+        with self.assertRaises(TypeError):
+            self.storage.all(1, 2)
+
+    def test_save(self):
+        """Test for save method"""
+        self.storage.save()
+        self.assertTrue(os.path.exists('file.json'))
+
+    def test_reload(self):
+        """Test for reload method"""
+        self.storage.reload()
+        self.assertTrue(os.path.exists('file.json'))
+        self.assertEqual(type(self.storage.all()), dict)
+        self.assertEqual(len(self.storage.all()), 0)
+        self.assertEqual(self.storage._FileStorage__objects, {})
+        self.assertEqual(self.storage._FileStorage__file_path, "file.json")
+        self.assertTrue(hasattr(self.storage, "_FileStorage__objects"))
+        self.assertTrue(hasattr(self.storage, "_FileStorage__file_path"))
+        self.assertTrue(hasattr(self.storage, "all"))
+        self.assertTrue(hasattr(self.storage, "new"))
+        self.assertTrue(hasattr(self.storage, "save"))
+        self.assertTrue(hasattr(self.storage, "reload"))
+
+    def test_save_no_args(self):
+        """Test for save method with no arguments"""
+        with self.assertRaises(TypeError):
+            self.storage.save(None)
