@@ -61,5 +61,13 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(type(my_model.id), str)
         self.assertEqual(type(my_model.created_at), datetime.datetime)
         self.assertEqual(type(my_model.updated_at), datetime.datetime)
-
-
+        self.assertEqual(my_model.__class__.__name__, "BaseModel")
+        my_model.name = "Holberton"
+        my_model.my_number = 89
+        d = my_model.to_dict()
+        self.assertEqual(d["id"], my_model.id)
+        self.assertEqual(d["name"], "Holberton")
+        self.assertEqual(d["my_number"], 89)
+        self.assertEqual(d["__class__"], "BaseModel")
+        self.assertEqual(d["created_at"], my_model.created_at.isoformat())
+        self.assertEqual(d["updated_at"], my_model.updated_at.isoformat())
