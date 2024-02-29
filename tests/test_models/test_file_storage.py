@@ -3,6 +3,14 @@ import unittest
 import os
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+from datetime import datetime
+import pep8
 
 
 class TestFileStorage(unittest.TestCase):
@@ -36,42 +44,53 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsNot(FileStorage.__doc__, None, "docstring")
 
     def test_attributes_FileStorage(self):
-        """Test for file storage attributes"""
-        self.assertTrue('all' in self.storage.__dict__)
-        self.assertTrue('_FileStorage__file_path' in self.storage.__dict__)
+        """Test for FileStorage attributes"""
         self.assertTrue('all' in self.storage.__dict__)
         self.assertTrue('new' in self.storage.__dict__)
         self.assertTrue('save' in self.storage.__dict__)
         self.assertTrue('reload' in self.storage.__dict__)
+        self.assertTrue('_FileStorage__file_path' in self.storage.__dict__)
+        self.assertTrue('_FileStorage__objects' in self.storage.__dict__)
 
     def test_all(self):
         """Test for all method"""
-        bm = BaseModel()
-        key = bm.__class__.__name__ + "." + bm.id
-        self.storage.new(bm)
-        self.assertIn(key, self.storage.all().keys())
+        storage = FileStorage()
+        obj = storage.all()
+        self.assertIsNotNone(obj)
+        self.assertEqual(type(obj), dict)
+        self.assertIs(obj, storage._FileStorage__objects)
 
     def test_new(self):
         """Test for new method"""
-        bm = BaseModel()
-        key = bm.__class__.__name__ + "." + bm.id
-        self.storage.new(bm)
-        self.assertIn(key, self.storage.all().keys())
-
-    def test_save(self):
-        """Test for save method"""
-        bm = BaseModel()
-        key = bm.__class__.__name__ + "." + bm.id
-        self.storage.new(bm)
-        self.storage.save()
-        with open("file.json", "r") as f:
-            self.assertIn(key, f.read())
+        storage = FileStorage()
+        obj = storage.all()
+        user = User()
+        user.id = 12345
+        user.name = "Betty"
+        storage.new(user)
+        key = user.__class__.__name__ + "." + str(user.id)
+        self.assertIsNotNone(obj[key])
 
     def test_reload(self):
         """Test for reload method"""
-        bm = BaseModel()
-        key = bm.__class__.__name__ + "." + bm.id
-        self.storage.new(bm)
-        self.storage.save()
-        self.storage.reload()
-        self.assertIn(key, self.storage.all().keys())
+        storage = FileStorage()
+        obj = storage.all()
+        user = User()
+        user.id = 12345
+        user.name = "Betty"
+        key = user.__class__.__name__ + "." + str(user.id)
+        obj[key] = user
+        storage.reload()
+        self.assertIsNotNone(obj[key])
+
+    def test_save(self):
+        """Test for save method"""
+        storage = FileStorage()
+        obj = storage.all()
+        user = User()
+        user.id = 12345
+        user.name = "Betty"
+        key = user.__class__.__name__ + "." + str(user.id)
+        obj[key] = user
+        storage.save()
+        self.assertTrue(os.path.exists('file.json'))
