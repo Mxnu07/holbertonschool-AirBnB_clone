@@ -15,6 +15,8 @@ from models.place import Place
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import sys
+sys.path.append('/Users/manuel/Documents/GitHub/holbertonschool-AirBnB_clone')
 
 
 class TestFileStorage_instantiation(unittest.TestCase):
