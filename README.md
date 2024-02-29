@@ -72,6 +72,17 @@ Here are some examples of how to use the command interpreter:
 ```bash
 (hbnb) all BaseModel
 ```
+---
+### Non-interacive mode example
+```bash
+holbertonschool-AirBnB_clone % echo "help" | ./console.py 
+(hbnb)
+Documented commands (type help <topic>):
+========================================
+EOF  all  create  destroy  help  quit  show  update
+
+(hbnb)
+```
 ### Enjoy using the AirBnB Clone Command Interpreter!
 ---
 ## Authors
