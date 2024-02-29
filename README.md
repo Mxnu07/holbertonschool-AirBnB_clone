@@ -50,6 +50,8 @@ To display a list of all instances of a specific class or all classes, use the `
 
 ## Examples
 
+### Interactive mode
+
 Here are some examples of how to use the command interpreter:
 
 - ### Creating a new instance of BaseModel:
@@ -73,7 +75,7 @@ Here are some examples of how to use the command interpreter:
 (hbnb) all BaseModel
 ```
 ---
-### Non-interacive mode example
+### Non-interacive mode
 ```bash
 holbertonschool-AirBnB_clone % echo "help" | ./console.py 
 (hbnb)
