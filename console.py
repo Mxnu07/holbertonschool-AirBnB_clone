@@ -16,14 +16,6 @@ class HBNBCommand(cmd.Cmd):
     """command interpreter"""
 
     prompt = "(hbnb)"
-    class_name_mapping = {
-    'Place': Place,
-    'State': State,
-    'City': City,
-    'Amenity': Amenity,
-    'Review': Review
-    }
-
 
     def do_quit(self, arg):
         """exit the program"""
@@ -107,7 +99,7 @@ class HBNBCommand(cmd.Cmd):
             print([str(obj) for obj in objects.values()])
         else:
             try:
-                cls = class_name_mapping(args[0])
+                cls = eval(args[0])
                 print([str(obj) for key, obj in objects.items()
                        if key.split('.')[0] == args[0]])
             except NameError:
