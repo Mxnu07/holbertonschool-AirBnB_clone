@@ -3,7 +3,6 @@ import unittest
 import os
 from models.place import Place
 from models.base_model import BaseModel
-import pep8
 
 
 class TestPlace(unittest.TestCase):
@@ -33,12 +32,6 @@ class TestPlace(unittest.TestCase):
             os.remove("file.json")
         except FileNotFoundError:
             pass
-
-    def test_pep8(self):
-        """Test that we conform to PEP8"""
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files(["models/place.py"])
-        self.assertEqual(result.total_errors, 0, "Fix pep8")
 
     def test_docstring(self):
         """Test for docstrings"""

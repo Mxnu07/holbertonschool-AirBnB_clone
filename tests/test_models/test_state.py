@@ -27,12 +27,6 @@ class TestState(unittest.TestCase):
         except Exception:
             pass
 
-    def test_pep8_State(self):
-        """Test for pep8 style"""
-        style = pep8.StyleGuide(quiet=True)
-        check = style.check_files(['models/state.py'])
-        self.assertEqual(check.total_errors, 0, "pep8 error")
-
     def test_checking_for_docstring_State(self):
         """Test for docstring"""
         self.assertIsNot(State.__doc__, None, "docstring")

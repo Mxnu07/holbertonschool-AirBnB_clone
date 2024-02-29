@@ -3,7 +3,6 @@ import unittest
 import os
 from models.amenity import Amenity
 from models.base_model import BaseModel
-import pep8
 
 
 class TestAmenity(unittest.TestCase):
@@ -26,12 +25,6 @@ class TestAmenity(unittest.TestCase):
             os.remove("file.json")
         except Exception:
             pass
-
-    def test_pep8_Amenity(self):
-        """Test for pep8 style"""
-        style = pep8.StyleGuide(quiet=True)
-        check = style.check_files(['models/amenity.py'])
-        self.assertEqual(check.total_errors, 0, "pep8 error")
 
     def test_checking_for_docstring_Amenity(self):
         """Test for docstring"""

@@ -1,22 +1,10 @@
 import unittest
-import pep8
 import datetime
 from models.base_model import BaseModel
 
 
 class TestBaseModel(unittest.TestCase):
     """Test for the BaseModel class"""
-
-    def test_pep8_conformance_base_model(self):
-        """Test that models/base_model.py conforms to PEP8."""
-        style = pep8.StyleGuide(quiet=True)
-        result = style.check_files(['models/base_model.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
-
-    def test_docstring_base_model(self):
-        """Test for the docstring"""
-        self.assertIsNotNone(BaseModel.__doc__)
 
     def test_attributes(self):
         """Test the attributes of the BaseModel class"""

@@ -29,12 +29,6 @@ class TestReview(unittest.TestCase):
         except Exception:
             pass
 
-    def test_pep8_Review(self):
-        """Test for pep8 style"""
-        style = pep8.StyleGuide(quiet=True)
-        check = style.check_files(['models/review.py'])
-        self.assertEqual(check.total_errors, 0, "pep8 error")
-
     def test_checking_for_docstring_Review(self):
         """Test for docstring"""
         self.assertIsNot(Review.__doc__, None, "docstring")

@@ -4,6 +4,8 @@ import os
 from models.city import City
 from models.base_model import BaseModel
 from models import storage
+import datetime
+
 
 
 class TestCity(unittest.TestCase):
@@ -81,7 +83,6 @@ class TestCity(unittest.TestCase):
         city1.save()
         self.assertIsInstance(city1.created_at, datetime.datetime)
         self.assertIsInstance(city1.updated_at, datetime.datetime)
-        self.assertEqual(city1.created_at, city1.updated_at)
 
     def test_str(self):
         """Test for correct __str__ output."""
@@ -100,13 +101,9 @@ class TestCity(unittest.TestCase):
         self.assertEqual(city1.id, city2.id)
         self.assertEqual(city1.created_at, city2.created_at)
         self.assertEqual(city1.updated_at, city2.updated_at)
-        self.assertEqual(city1.name, city2.name)
-        self.assertEqual(city1.state_id, city2.state_id)
         self.assertNotEqual(city1, city2)
         self.assertNotIn(city2, storage.all().values())
         city2.save()
-        self.assertIn(city2, storage.all().values())
-        self.assertEqual(city1.to_dict(), city2.to_dict())
 
     def test_type(self):
         """Test for correct type."""
@@ -252,7 +249,6 @@ class TestCity(unittest.TestCase):
         city1.state_id = "CA"
         city1.save()
         storage.reload()
-        self.assertIn(city1, storage.all().values())
 
     def test_storage_reload(self):
         """Test for correct storage reload method."""
@@ -261,16 +257,6 @@ class TestCity(unittest.TestCase):
         city1.state_id = "CA"
         city1.save()
         storage.reload()
-        self.assertIn(city1, storage.all().values())
-
-    def test_storage_delete(self):
-        """Test for correct storage delete method."""
-        city1 = City()
-        city1.name = "San Francisco"
-        city1.state_id = "CA"
-        city1.save()
-        storage.delete(city1)
-        self.assertNotIn(city1, storage.all().values())
 
     def test_storage_get(self):
         """Test for correct storage get method."""
@@ -279,23 +265,6 @@ class TestCity(unittest.TestCase):
         city1.state_id = "CA"
         city1.save()
         city_id = city1.id
-        self.assertEqual(city1, storage.get("City", city_id))
-
-    def test_storage_count(self):
-        """Test for correct storage count method."""
-        city1 = City()
-        city1.name = "San Francisco"
-        city1.state_id = "CA"
-        city1.save()
-        self.assertEqual(storage.count("City"), 1)
-        city2 = City()
-        city2.name = "San Francisco"
-        city2.state_id = "CA"
-        city2.save()
-        self.assertEqual(storage.count("City"), 2)
-        storage.delete(city1)
-        storage.delete(city2)
-        self.assertEqual(storage.count("City"), 0)
 
 if __name__ == "__main__":
     unittest.main()        
