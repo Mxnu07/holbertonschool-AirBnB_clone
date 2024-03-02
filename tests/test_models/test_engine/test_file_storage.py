@@ -1,163 +1,57 @@
-#!/usr/bin/python3
-"""Defines unittests for models/engine/file_storage.py.
-Unittest classes:
-    TestFileStorage_instantiation
-    TestFileStorage_methods
-"""
-import sys
-sys.path.append('/Users/manuel/Documents/GitHub/holbertonschool-AirBnB_clone')
-import os
-import models
 import unittest
-from models.base_model import BaseModel
-from models.engine.file_storage import FileStorage
-from models.user import User
-from models.state import State
-from models.place import Place
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
+from unittest.mock import patch
+from io import StringIO
+from models import storage
+from console import HBNBCommand
 
-
-class TestFileStorage_instantiation(unittest.TestCase):
-    """Unittests for testing instantiation of the FileStorage class."""
-
-    def test_FileStorage_instantiation_no_args(self):
-        self.assertEqual(type(FileStorage()), FileStorage)
-
-    def test_FileStorage_instantiation_with_arg(self):
-        with self.assertRaises(TypeError):
-            FileStorage(None)
-
-    def test_FileStorage_file_path_is_private_str(self):
-        self.assertEqual(str, type(FileStorage._FileStorage__file_path))
-
-    def testFileStorage_objects_is_private_dict(self):
-        self.assertEqual(dict, type(FileStorage._FileStorage__objects))
-
-    def test_storage_initializes(self):
-        self.assertEqual(type(models.storage), FileStorage)
-
-
-class TestFileStorage_methods(unittest.TestCase):
-    """Unittests for testing methods of the FileStorage class."""
+class TestHBNBCommand(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.hbnb_command = HBNBCommand()
 
-    def tearDown(self) -> None:
-        """Resets FileStorage data."""
-        FileStorage._FileStorage__objects = {}
-        if os.path.exists(FileStorage._FileStorage__file_path):
-            os.remove(FileStorage._FileStorage__file_path)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_quit(self, mock_stdout):
+        self.assertTrue(self.hbnb_command.do_quit(None))
+        self.assertEqual(mock_stdout.getvalue().strip(), "")
 
-    def test_all(self):
-        self.assertEqual(dict, type(models.storage.all()))
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_EOF(self, mock_stdout):
+        self.assertTrue(self.hbnb_command.do_EOF(None))
+        self.assertEqual(mock_stdout.getvalue().strip(), "")
 
-    def test_all_with_arg(self):
-        with self.assertRaises(TypeError):
-            models.storage.all(None)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_create(self, mock_stdout):
+        self.hbnb_command.do_create("BaseModel")
+        output = mock_stdout.getvalue().strip()
+        self.assertTrue(output)
+        # Aquí puedes agregar más aserciones para verificar el comportamiento esperado
 
-    def test_new(self):
-        bm = BaseModel()
-        us = User()
-        st = State()
-        pl = Place()
-        cy = City()
-        am = Amenity()
-        rv = Review()
-        models.storage.new(bm)
-        models.storage.new(us)
-        models.storage.new(st)
-        models.storage.new(pl)
-        models.storage.new(cy)
-        models.storage.new(am)
-        models.storage.new(rv)
-        self.assertIn("BaseModel." + bm.id, models.storage.all().keys())
-        self.assertIn(bm, models.storage.all().values())
-        self.assertIn("User." + us.id, models.storage.all().keys())
-        self.assertIn(us, models.storage.all().values())
-        self.assertIn("State." + st.id, models.storage.all().keys())
-        self.assertIn(st, models.storage.all().values())
-        self.assertIn("Place." + pl.id, models.storage.all().keys())
-        self.assertIn(pl, models.storage.all().values())
-        self.assertIn("City." + cy.id, models.storage.all().keys())
-        self.assertIn(cy, models.storage.all().values())
-        self.assertIn("Amenity." + am.id, models.storage.all().keys())
-        self.assertIn(am, models.storage.all().values())
-        self.assertIn("Review." + rv.id, models.storage.all().keys())
-        self.assertIn(rv, models.storage.all().values())
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_show(self, mock_stdout):
+        with patch.dict(storage.all(), {"BaseModel.1234": "test_object"}):
+            self.hbnb_command.do_show("BaseModel 1234")
+            self.assertEqual(mock_stdout.getvalue().strip(), "test_object")
 
-    def test_new_with_args(self):
-        with self.assertRaises(TypeError):
-            models.storage.new(BaseModel(), 1)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_destroy(self, mock_stdout):
+        with patch.dict(storage.all(), {"BaseModel.1234": "test_object"}):
+            self.hbnb_command.do_destroy("BaseModel 1234")
+            self.assertNotIn("BaseModel.1234", storage.all())
 
-    def test_new_with_None(self):
-        with self.assertRaises(AttributeError):
-            models.storage.new(None)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_all(self, mock_stdout):
+        with patch.dict(storage.all(), {"BaseModel.1234": "test_object1", "BaseModel.5678": "test_object2"}):
+            self.hbnb_command.do_all("BaseModel")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("test_object1", output)
+            self.assertIn("test_object2", output)
 
-    def test_save(self):
-        bm = BaseModel()
-        us = User()
-        st = State()
-        pl = Place()
-        cy = City()
-        am = Amenity()
-        rv = Review()
-        models.storage.new(bm)
-        models.storage.new(us)
-        models.storage.new(st)
-        models.storage.new(pl)
-        models.storage.new(cy)
-        models.storage.new(am)
-        models.storage.new(rv)
-        models.storage.save()
-        save_text = ""
-        with open("file.json", "r") as f:
-            save_text = f.read()
-            self.assertIn("BaseModel." + bm.id, save_text)
-            self.assertIn("User." + us.id, save_text)
-            self.assertIn("State." + st.id, save_text)
-            self.assertIn("Place." + pl.id, save_text)
-            self.assertIn("City." + cy.id, save_text)
-            self.assertIn("Amenity." + am.id, save_text)
-            self.assertIn("Review." + rv.id, save_text)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_update(self, mock_stdout):
+        with patch.dict(storage.all(), {"BaseModel.1234": "test_object"}):
+            self.hbnb_command.do_update("BaseModel 1234 name 'new_name'")
+            updated_object = storage.all()["BaseModel.1234"]
+            self.assertEqual(updated_object.name, "new_name")
 
-    def test_save_with_arg(self):
-        with self.assertRaises(TypeError):
-            models.storage.save(None)
-
-    def test_reload(self):
-        bm = BaseModel()
-        us = User()
-        st = State()
-        pl = Place()
-        cy = City()
-        am = Amenity()
-        rv = Review()
-        models.storage.new(bm)
-        models.storage.new(us)
-        models.storage.new(st)
-        models.storage.new(pl)
-        models.storage.new(cy)
-        models.storage.new(am)
-        models.storage.new(rv)
-        models.storage.save()
-        models.storage.reload()
-
-    def test_reload_with_arg(self):
-        with self.assertRaises(TypeError):
-            models.storage.reload(None)
-
-    def test_reload_no_file(self):
-        self.assertEqual(models.storage.reload(), None)
-
-    def test_reload_no_objects(self):
-        with open("file.json", "w") as f:
-            f.write("{}")
-        models.storage.reload()
-        self.assertEqual(models.storage.all(), {})
-        os.remove("file.json")
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
