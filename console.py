@@ -57,7 +57,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             cls = eval(args[0])
         except NameError:
-            print("** class d0oesn't exist **")
+            print("** class doesn't exist **")
             return
         if len(args) < 2:
             print("** instance id missing **")
