@@ -6,8 +6,10 @@
 
 .boxes{
     display: flex;
-    flex-wrap: wrap; /*added to fix boxes*/
-    position: fixed;
+    flex-wrap: wrap;
+    justify-content: center;
+    position:relative;
+    margin-left: -50px;
 }
 
 .places article{
