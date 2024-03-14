@@ -27,7 +27,7 @@ button:hover{
 .filters .locations{
     width: 25%;
     height: 100%;
-    border-right: #DDDDDD solid 1px;    
+    border-right: 1px solid #DDDDDD;;    
     position: relative;
     z-index: 1;
 }
