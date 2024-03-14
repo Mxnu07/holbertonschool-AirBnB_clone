@@ -18,8 +18,7 @@
     text-align: center;
     border: 1px solid #FF5A5F;
     border-radius: 4px;
-    position: relative; /*added*/
-}
+    position: relative;
 
 .places article h2{
     margin-left: 0px;
